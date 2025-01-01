@@ -1,0 +1,32 @@
+{% extends 'common.html' %}
+
+    {% block title %}Edit Profile{% endblock title %}
+    {% block content %}
+    {% load static %}
+    
+    <div class="row mb-4" >
+        <div class="col-3"></div>
+        <div class="col-md-6 col-12" style="margin-top: 120px;">
+            <p>
+                <span class="mt-5">
+                {% if messages %}
+                    {% for message in messages %}
+                        {{message}}
+                    {% endfor %}
+                {% endif %}
+                </span>
+            </p>
+            <form method="post" class="mt-4 border shadow p-3", encytype="multipart/form-data">
+                {% csrf_token %}
+                {% load bootstrap %}
+                {{user_form|bootstrap}}
+                {{profile_form|bootstrap}}
+        
+                <div class='d-flex justify-content-center'>
+                    <input class="btn btn-primary mt-2 me-3 loginbutton" type="submit" value="Update">
+                </div>
+            </form>
+        </div>
+        </div>
+        </div>
+    {% endblock %}

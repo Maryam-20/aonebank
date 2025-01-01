@@ -1,0 +1,118 @@
+{% extends 'common.html' %}
+{% block content %}
+{% load static %}
+
+<section class="row my-4" style="margin-top: 20vh;">
+    {% if tran_list_json %}
+    <script type="text/javascript">
+        
+        // Parse the JSON string into a JavaScript object
+        var tranList = JSON.parse('{{ tran_list_json|escapejs }}');
+        console.log(tranList);  // Check the parsed object in the console
+        document.addEventListener("DOMContentLoaded", function(){
+           
+            if (tranList.transaction_type === "Transfer") {
+                document.getElementById("b_bank").innerText = "Beneficiary Bank:";
+                document.getElementById("b_acc").innerText = "Beneficiary Account Number:";
+                document.getElementById("benef_bank").innerText = tranList.benef_bank;
+                document.getElementById("benef_acct").innerText = tranList.benef_acct;
+            } else{
+                document.getElementById("b_bank").innerText = "";
+                document.getElementById("b_acc").innerText = "";
+                document.getElementById("benef_bank").innerText = "";
+                document.getElementById("benef_acct").innerText = "";
+                
+                // Hide these fields for other transaction types
+                document.getElementById("beneficiary_bank_row").style.display = "none";
+                document.getElementById("beneficiary_account_row").style.display = "none";
+                 
+            }
+
+            document.getElementById("transaction_type").innerText = tranList.transaction_type;
+            document.getElementById("amount").innerText = tranList.amount;
+            document.getElementById("tran").innerText = tranList.transaction_type;
+        });
+    </script>
+    {% endif %}
+
+    <header style="margin-top: 8vh;">
+        <p style="text-align: center; ">
+            <span> Transaction Confirmation</span>
+            <span id="tran"></span>
+        </p>
+    </header>
+    
+    
+    <div class="shadow border col-sm-12 col-md-4 pt-3" style="height: auto; margin: auto; margin-top: 23vh">
+        
+        <table class="table">
+            <tbody>
+                
+                <tr>
+                    <td class="py-3" style="width: 150px;"> Full Name:</td>
+                    <td class="py-3" style="width: 150px;">{{user_info.user.first_name}} {{user_info.user.last_name}}</td>
+
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">From account:</td>
+                    <td class="py-3" style="width: 150px;">{{user_info.account_number}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Transaction Type:</td>
+                    <td class="py-3" id="transaction_type">Loading...</td>
+                    <!-- <td class="py-3" style="width: 150px;">Transaction Type:</td>
+                    <td class="py-3">{{transact.transaction_type}}</td> -->
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Date:</td>
+                    <td class="py-3">{{trans_time}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Amount:</td>
+                    <td class="py-3" id="amount">Loading...</td>
+                    <!-- <td class="py-3" style="width: 150px;">Amount:</td>
+                    <td class="py-3">{{transact.amount}}</td> -->
+                </tr>
+
+                <!-- Beneficiary fields, to be displayed only for transfers -->
+                <tr id="beneficiary_bank_row">
+                    <td class="py-3" style="width: 150px;" id="b_bank"></td>
+                    <td class="py-3" id= "benef_bank">Loading...</td>
+                </tr>
+                <tr id="beneficiary_account_row">
+                    <td class="py-3" style="width: 150px;" id="b_acc"></td>
+                    <td class="py-3" id = "benef_acct">Loading...</td>
+                </tr>
+                
+                
+                {% if transact.bill_type %}
+                <tr>
+                    <td class="py-3" style="width: 150px;">Network name:</td>
+                    <td class="py-3">{{transact.network}}</td>
+                </tr>
+                {% endif %}
+                {% if benef_bank %}
+                <tr>
+                    <td class="py-3" style="width: 150px;">Phone number:</td>
+                    <td class="py-3">{{transact.number}}</td>
+                </tr>
+                {% endif %}
+                
+            </tbody>
+        </table>
+        <div class= "field">
+            <div class ="control d-flex justify-content-center gap-2 py-4">
+                
+                <a href="{% url 'submit_transaction' tran_list_json|urlencode user_info.account_id %}"> 
+                    <button type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+                </a>
+                
+            </div>
+        </div>
+       
+    </div>
+    
+</section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'common.html' %}
+{% block title %}SignUp{% endblock title %}
+{% block content %}
+{% load static %}
+<div>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="border shadow mb-4 px-4 col-md-6 col-12 col-offset" style="margin-top: 110px;">
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                {% load bootstrap %}
+                {{form|bootstrap_horizontal:"col-lg-3"}}
+
+                <div class="d-flex justify-content-center">
+                    <input class="btn btn-primary me-3 mb-3" type="submit" value="SignUp">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,44 @@
+{% extends 'common.html' %}
+
+    {% block title %}Transaction form{% endblock title %}
+    {% block content %}
+    {% load static %}
+    
+    <div class="row mb-4">
+        <div class="col-3"></div>
+        <div class="col-md-6 col-12" style="margin-top: 120px;">
+            
+            <form method="post" class="mt-4 border shadow p-3", encytype="multipart/form-data">
+                {% csrf_token %}
+                {% load bootstrap %}
+                {% if action == 'deposit' %}
+                    {{trans_form.transaction_amount|bootstrap}}
+                {% elif action == 'transfer'%}
+                    {{trans_form.beneficiary_bank|bootstrap}}
+                    {{trans_form.beneficiary_account_number|bootstrap}}
+                    {{trans_form.transaction_amount|bootstrap}}
+                {%elif action == 'withdraw'%}
+                    {{trans_form.transaction_amount|bootstrap}}
+                {% elif action == ' pay_bill' %}
+                    {{trans_form.bill_type|bootstrap}}
+                    {{trans_form.beneficiary_bank|bootstrap}}
+                    {{trans_form.account|bootstrap}}
+                    {{trans_form.amount|bootstrap}}
+                {% elif action == 'recharge' %}
+                    {{trans_form.mobile_network|bootstrap}}
+                    {{trans_form.beneficiary_bank|bootstrap}}
+                    {{trans_form.amount|bootstrap}}
+                
+                
+                {% endif %}
+                
+                
+        
+                <div class='d-flex justify-content-center'>
+                    <input class="btn btn-primary mt-2 me-3 loginbutton" type="submit" value="Submit"></a>
+                </div>
+            </form>
+        </div>
+        </div>
+        </div>
+    {% endblock content%}

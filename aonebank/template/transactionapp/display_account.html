@@ -1,0 +1,88 @@
+{% extends 'common.html' %}
+  {% block title %}{% if status == 'staff' %}Staff Details{% endif %}Customers Details{% endblock title %} 
+  {% block content %}
+  {% load static %}
+  <!-- style="padding-top: 5vh;" #style="margin-top: 3vh -->
+    <section class="section main-section">  
+        <div class="grid gap-6 grid-cols-1 md:grid-cols-3 mb-6">
+            <div class='card'>
+                <div class="card-content">
+                    <div class="flex items-center justify-between">
+                        <div class="widget-label" style="margin-top: 110px;">
+                            <table class="table table-striped table-hover mx-auto px-auto">
+                                <thead bgcolor="#969cad">
+                                    <th>USERNAME</th>
+                                    <th>ACCOUNT TYPE</th>
+                                    <th> ACCOUNT NUMBER</th>
+                                    <th>STATUS</th>
+                                    <th>PROFILE</th>
+                                    <th>CHANGE PIN</th>
+                                    {% if account.user.profile.position == "Customer care" or request.user.is_superuser %}
+                                    <th>RESET PIN</th>
+                                    {% endif %}
+                                </thead>
+
+                                {% if my_account %}
+                                {% for account in my_account %}
+                                    <tr>
+                                        <td>
+                                            <span style="color: #969cad;" class= "font-weight-bold">
+                                                {{account.user.username}}
+                                            </span>
+                                        </td>
+                    
+                                        <td>
+                                            <span style="color: #969cad;" class= "font-weight-bold">
+                                                {{account.account_type}}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span style="color: #969cad;" class= "font-weight-bold">
+                                                {{account.account_number}}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span style="color: #969cad;" class= "font-weight-bold">
+                                                {{account.account_status}}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url 'profile' account.user_id %}">
+                                                <span style="color: #0e399c;" class= "font-weight-bold">
+                                                    Profile
+                                                </span>
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url "change_pin" account.account_id %}">
+                                                <span style="color: #0e399c;" class= "font-weight-bold">
+                                                   CHANGE PIN
+                                                </span>
+                                            </a>
+                                        </td>
+                                        {% if request.user.profile.position == "Customer care" or request.user.is_superuser %}
+                                        <td>
+                                            <a href="{% url "reset_pin" account.account_id request.user.id %}">
+                                                <span style="color: #0e399c;" class= "font-weight-bold">
+                                                   RESET PIN
+                                                </span>
+                                            </a>
+                                        </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                {% endif %}
+                                
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>   
+
+{% endblock content%}

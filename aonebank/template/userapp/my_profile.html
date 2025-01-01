@@ -1,0 +1,113 @@
+{% extends 'common.html' %}
+{% block content %}
+{% load static %}
+
+<section class="row my-4">
+    {% if my_profile %}
+    {% for profile in my_profile  %}
+    <div class="shadow border col-sm-12 col-md-4 pt-3" style="height: auto; margin: auto; margin-top: 100px">
+        <div class=" container-fluid d-flex py-4">
+            <div class=" border border-primary rounded-circle " style="height: 100px; width: 100px;">
+                {% if profile.profile_passport %}
+                <img src="{{profile.profile_passport.url}}" alt="{{profile.user.username}}" width="100px" height="100px"/>
+                {% else %}
+                <img src="{% static '/images/team1.jpg' %}" alt="" width="100px" height="100px"/>
+                {% endif %}
+            </div>
+            {% if profile.user.is_staff == 1 %}
+            <h5 class="align-self-center mx-3"> Staff Profile Details</h5>
+            {% else %}
+            <h5 class="align-self-center mx-3"> Customer Profile Details</h5>
+            {% endif %}
+        </div>
+        <table class="table">
+            <tbody>
+                <tr>
+                    {% if profile.user.is_staff == 1 %}
+                    <td class="py-3" style="width: 150px;">Staff ID:</td>
+                    <td class="py-3" >AON-0{{profile.user_id}}</td>
+                    {% else %}
+                    <td class="py-3" style="width: 150px;">Customer ID:</td>
+                    <td class="py-3" >AON-0{{profile.user_id}}</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Username:</td>
+                    <td class="py-3">{{profile.user.username}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;"> Full Name:</td>
+                    <td class="py-3" style="width: 150px;">{{profile.user.first_name}} {{profile.user.last_name}}</td>
+
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Email:</td>
+                    <td class="py-3" style="width: 150px;">{{profile.user.email}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Phone:</td>
+                    <td class="py-3">{{profile.phone}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Address:</td>
+                    <td class="py-3">{{profile.address}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Date of Birth:</td>
+                    <td class="py-3">{{profile.date_of_birth}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Gender:</td>
+                    <td class="py-3">{{profile.sex}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Marital Status:</td>
+                    <td class="py-3">{{profile.marital_status}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Nationality:</td>
+                    <td class="py-3">{{profile.nationality}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">State:</td>
+                    <td class="py-3">{{profile.state}}</td>
+                </tr>
+                {% if profile.user.is_staff == 1 %}
+                <tr>
+                    <td class="py-3" style="width: 150px;">Position:</td>
+                    <td class="py-3">{{profile.position}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Department:</td>
+                    <td class="py-3">{{profile.department}}</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        {% if request.user.is_staff == 1 %}
+        <div class= "field">
+            <div class ="control d-flex justify-content-center gap-2 py-4">
+                
+                <a href="{% url 'edit_profile' profile.user_id %}"> 
+                    <button type="submit" class="btn btn-primary">
+                        Edit Profile
+                    </button>
+                
+                <a href="{% url "deactivate_profile" profile.user_id %}">
+                    <button type="submit" class="btn btn-primary mx-5">
+                        {% if profile.user.is_active == 1 %}
+                        Deactivate
+                        {% else %}
+                        Activate
+                        {% endif %}
+                    </button>
+                </a>
+               
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
+</section>
+{% endblock %}

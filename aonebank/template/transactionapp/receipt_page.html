@@ -1,0 +1,90 @@
+{% extends 'common.html' %}
+{% block content %}
+{% load static %}
+
+<section class="row my-4" style="margin-top: 20vh;">
+
+    <header style="margin-top: 8vh;">
+        <p style="text-align: center; ">
+            <span> Transaction Receipt</span>
+        </p>
+    </header>
+    
+    {% if transaction %}
+    {% for transact in transaction  %}
+    <div class="shadow border col-sm-12 col-md-4 pt-3" style="height: auto; margin: auto; margin-top: 23vh">
+        
+        <table class="table">
+            <tbody>
+                
+                <tr>
+                    <td class="py-3" style="width: 150px;"> Full Name:</td>
+                    <td class="py-3" style="width: 150px;">{{transact.user.first_name}} {{transact.user.last_name}}</td>
+
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">From account:</td>
+                    <td class="py-3" style="width: 150px;">{{transact.account.account_number}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Transaction Type:</td>
+                    <td class="py-3" id="transaction_type">{{transact.transaction_type}}</td>
+                    <!-- <td class="py-3" style="width: 150px;">Transaction Type:</td>
+                    <td class="py-3">{{transact.transaction_type}}</td> -->
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Date:</td>
+                    <td class="py-3">{{transact.transaction_date}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Amount:</td>
+                    <td class="py-3" id="amount">{{transact.transaction_amount}}</td>
+                    <!-- <td class="py-3" style="width: 150px;">Amount:</td>
+                    <td class="py-3">{{transact.amount}}</td> -->
+                    {% comment %} <td class="py-3" id="amount">{{transact.transaction_amount}}</td> {% endcomment %}
+                </tr>
+                {% if transact.transaction_type == 'transfer' or transact.transaction_type == 'pay_bill' %}
+                <tr>
+                    <td class="py-3" style="width: 150px;">Beneficiary bank:</td>
+                    <td class="py-3">{{transact.beneficiary_bank}}</td>
+                </tr>
+                
+                <tr>
+                    <td class="py-3" style="width: 150px;">Beneficiary Account Number:</td>
+                    <td class="py-3">{{transact.beneficiary_account_number}}</td>
+                </tr>
+                
+                {% elif transact.transaction_type == 'recharge' %} 
+                <tr>
+                    <td class="py-3" style="width: 150px;">Beneficiary number:</td>
+                    <td class="py-3">{{transact.recepient_phone_number}}</td>
+                </tr>
+                <tr>
+                    <td class="py-3" style="width: 150px;">Network name:</td>
+                    <td class="py-3">{{transact.mobile_network}}</td>
+                </tr>
+                
+                <tr>
+                    <td class="py-3" style="width: 150px;">Phone number:</td>
+                    <td class="py-3">{{transact.number}}</td>
+                </tr>
+                {% endif %}
+                {% comment %} {% endif %} {% endcomment %}
+            </tbody>
+        </table>
+         {% comment %} <div class= "field">
+            <div class ="control d-flex justify-content-center gap-2 py-4">
+                
+                <a href="{% url 'submit_transaction' tran_list_json user_info.account_id %}"> 
+                    <button type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+                </a>
+                
+            </div> {% endcomment %}  
+    </div>
+    {% endfor %}
+    {% endif %}
+    
+</section>
+{% endblock %}
